@@ -6,11 +6,14 @@ const fs = require('fs');
 
 function read(filename) {
     // let result = fs.readFileSync(filename, 'utf8');
-    let str = fs.readFile(filename, 'utf8', (err, str) => {
-        if(err) return err + '';
-        return str;
+    return new Promise((resolve, reject) => {
+        fs.readFile(filename, 'utf8', (err, str) => {
+            if(err) reject(err);
+            else resolve(str);
+        });
     });
-    return str;
 }
 
-console.log(read('./x.txt'));
+read('./x.txt')
+.then(str => console.log(str))
+.catch(err => console.log(err.message));
